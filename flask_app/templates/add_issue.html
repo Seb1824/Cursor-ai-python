@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Issue - Gestor de Issues{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Agregar Nuevo Issue</h2>
+    
+    <form method="POST" action="{{ url_for('agregar_issue') }}" class="issue-form">
+        <div class="form-group">
+            <label for="titulo">Título *</label>
+            <input type="text" 
+                   id="titulo" 
+                   name="titulo" 
+                   class="form-control" 
+                   placeholder="Ej: Corregir bug en login"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción *</label>
+            <textarea id="descripcion" 
+                      name="descripcion" 
+                      class="form-control" 
+                      rows="5"
+                      placeholder="Describe el issue en detalle..."
+                      required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="prioridad">Prioridad *</label>
+            <select id="prioridad" name="prioridad" class="form-control" required>
+                <option value="">Selecciona una prioridad</option>
+                <option value="alta">Alta</option>
+                <option value="media">Media</option>
+                <option value="baja">Baja</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Agregar Issue</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

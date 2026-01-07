@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Issues - Gestor de Issues{% endblock %}
+
+{% block content %}
+<div class="header-section">
+    <div class="header-text">
+        <h2>Lista de Issues</h2>
+        <p class="header-description">
+            Usa esta página para registrar tareas, bugs o mejoras de tu proyecto.
+            Cada tarjeta es un issue que puedes crear, priorizar y marcar como completado.
+        </p>
+        <ul class="header-examples">
+            <li><strong>Ejemplo 1:</strong> <em>Título:</em> "Corregir bug en login" – <em>Descripción:</em> "El botón no responde en móvil" – <em>Prioridad:</em> alta.</li>
+            <li><strong>Ejemplo 2:</strong> <em>Título:</em> "Mejorar rendimiento" – <em>Descripción:</em> "Optimizar carga de la página de inicio" – <em>Prioridad:</em> media.</li>
+            <li><strong>Ejemplo 3:</strong> <em>Título:</em> "Actualizar documentación" – <em>Descripción:</em> "Agregar sección de instalación" – <em>Prioridad:</em> baja.</li>
+        </ul>
+    </div>
+
+    <div class="header-actions">
+        <a href="{{ url_for('agregar_issue') }}" class="btn btn-primary btn-large">
+            + Agregar Nuevo Issue
+        </a>
+        <p class="header-hint">
+            Haz clic en este botón para abrir el formulario y crear un nuevo issue.
+        </p>
+    </div>
+</div>
+
+{% if issues %}
+    <div class="issues-grid">
+        {% for issue in issues %}
+        <div class="issue-card {% if issue.estado.value == 'completado' %}completed{% endif %}">
+            <div class="issue-header">
+                <span class="issue-id">#{{ issue.id }}</span>
+                {% if issue.estado.value == 'completado' %}
+                    <span class="badge badge-success">Completado</span>
+                {% else %}
+                    <span class="badge badge-pending">Pendiente</span>
+                {% endif %}
+            </div>
+            <h3 class="issue-title">{{ issue.titulo }}</h3>
+            <p class="issue-description">{{ issue.descripcion }}</p>
+            <div class="issue-footer">
+                <span class="priority priority-{{ issue.prioridad.lower() }}">{{ issue.prioridad }}</span>
+                {% if issue.estado.value == 'pendiente' %}
+                    <a href="{{ url_for('completar_issue', issue_id=issue.id) }}" 
+                       class="btn btn-success btn-sm"
+                       onclick="return confirm('¿Marcar este issue como completado?')">
+                        Marcar como Completado
+                    </a>
+                {% else %}
+                    <span class="completed-label">✓ Completado</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>No hay issues registrados aún.</p>
+        <a href="{{ url_for('agregar_issue') }}" class="btn btn-primary">Crear tu primer issue</a>
+    </div>
+{% endif %}
+{% endblock %}
